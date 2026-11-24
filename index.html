@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Квест «Н и НН»</title>
+<style>
+:root{--bg1:#ffe45e;--bg2:#ff7aa8;--bg3:#6c63ff;--card:#fffdf7;--ink:#241a4a;--mute:#6b6490;--pri:#6c63ff;--ok:#1fae6b;--okbg:#d9f7e8;--bad:#e5383b;--badbg:#ffe0e1;--line:#e3dcff;--sun:#ffb703;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#3a2a7a;--bg2:#6a2c7a;--bg3:#1f1a52;--card:#2a2360;--ink:#f4f0ff;--mute:#b6aee6;--pri:#9d96ff;--ok:#4be39a;--okbg:#0f4a35;--bad:#ff7b7e;--badbg:#5a1f2c;--line:#463e88}}
+:root[data-theme="dark"]{--bg1:#3a2a7a;--bg2:#6a2c7a;--bg3:#1f1a52;--card:#2a2360;--ink:#f4f0ff;--mute:#b6aee6;--pri:#9d96ff;--ok:#4be39a;--okbg:#0f4a35;--bad:#ff7b7e;--badbg:#5a1f2c;--line:#463e88}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{min-height:100vh;font-family:"Trebuchet MS","Segoe UI",Verdana,sans-serif;color:var(--ink);background:linear-gradient(135deg,var(--bg1),var(--bg2) 55%,var(--bg3));background-attachment:fixed;display:flex;justify-content:center;padding:16px}
+#app{width:100%;max-width:640px}
+.top{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px;color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.35)}
+.chip{background:rgba(0,0,0,.28);border-radius:999px;padding:6px 14px;font-size:15px}
+.bar{height:10px;border-radius:9px;background:rgba(255,255,255,.35);margin-bottom:14px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--sun);border-radius:9px;transition:width .4s}
+.card{background:var(--card);border-radius:26px;padding:22px;box-shadow:0 10px 0 rgba(0,0,0,.14);border:3px solid var(--line)}
+h1{font-size:clamp(28px,7vw,40px);margin:6px 0 10px;line-height:1.1}
+h2{font-size:clamp(22px,5.5vw,28px);margin:6px 0 10px;line-height:1.15}
+p{line-height:1.5;margin:8px 0;font-size:17px}
+.big{font-size:64px;line-height:1;text-align:center}
+.rule{background:var(--line);border-radius:18px;padding:14px 16px;margin:14px 0;font-size:16px;line-height:1.5}
+.btn{display:block;width:100%;border:0;border-radius:18px;padding:16px;font:inherit;font-size:19px;font-weight:800;color:#fff;background:var(--pri);box-shadow:0 6px 0 rgba(0,0,0,.25);cursor:pointer;margin-top:14px;transition:transform .1s}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.btn.alt{background:var(--sun);color:#3a2a00}
+.btn:focus-visible,.ans:focus-visible{outline:4px solid var(--sun);outline-offset:2px}
+.word{font-size:clamp(26px,7vw,36px);font-weight:800;text-align:center;margin:18px 0 8px;line-height:1.35;letter-spacing:.5px}
+.gap{display:inline-block;min-width:1.6em;border-bottom:4px dashed var(--pri);color:var(--pri);margin:0 2px}
+.gap.ok{border-bottom-style:solid;color:var(--ok)}
+.gap.bad{border-bottom-style:solid;color:var(--bad)}
+.row{display:flex;gap:12px;margin-top:10px}
+.ans{flex:1;border:3px solid var(--pri);background:var(--card);color:var(--pri);border-radius:20px;padding:18px 0;font:inherit;font-size:34px;font-weight:900;cursor:pointer;box-shadow:0 6px 0 var(--line)}
+.ans:active{transform:translateY(3px)}
+.ans.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.ans.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.ans:disabled{cursor:default}
+.fb{border-radius:18px;padding:14px 16px;margin-top:16px;font-size:16px;line-height:1.5;animation:pop .25s}
+.fb.ok{background:var(--okbg)}.fb.bad{background:var(--badbg)}
+.fb b{display:block;font-size:19px;margin-bottom:4px}
+@keyframes pop{from{transform:scale(.96);opacity:0}to{transform:none;opacity:1}}
+.stars{font-size:40px;text-align:center;letter-spacing:6px}
+.map{display:flex;gap:6px;justify-content:center;margin:10px 0}
+.map span{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:var(--line)}
+.map .done{background:var(--ok)}.map .cur{background:var(--sun);transform:scale(1.12)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.stat{background:var(--line);border-radius:16px;padding:12px;text-align:center}
+.stat b{display:block;font-size:28px}
+.stat span{font-size:14px;color:var(--mute)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var L=[
+{n:"Лес прилагательных",e:"🌲",rule:"В суффиксах -АН-, -ЯН- пишется одна Н: кожаный, серебряный. Исключения: стеклянный, оловянный, деревянный. Одна Н и в слове ветреный. В суффиксе -ЕНН- пишется НН: соломенный.",
+q:[["кожа_ый ремень","н","Суффикс -АН-: кожаный. После него одна Н."],["оловя_ый солдатик","нн","Оловянный — слово-исключение: пишется НН, хотя суффикс -ЯН-."],["соломе_ая шляпа","нн","Суффикс -ЕНН-: соломенная. В нём всегда две Н."],["ветре_ый день","н","Ветреный — исключение: одна Н, хотя суффикс -ЕНН- по звучанию."]]},
+{n:"Город суффиксов",e:"🏙️",rule:"Суффиксы -ЕНН- и -ОНН- пишутся с двумя Н: станционный. Если основа заканчивается на Н и добавляется суффикс -Н-, тоже получается НН: туманный, карманный.",
+q:[["станцио_ый смотритель","нн","Суффикс -ОНН-: станционный."],["тума_ое утро","нн","Туман + суффикс -Н-: туманное. Н корня и Н суффикса."],["серебря_ая ложка","н","Суффикс -ЯН-: серебряная. Одна Н."],["карма_ый словарь","нн","Карман + суффикс -Н-: карманный."]]},
+{n:"Долина причастий",e:"⛰️",rule:"В полных причастиях пишется НН, если есть приставка, зависимое слово или глагол совершенного вида: прочитанная, купленная. Одна Н — у слов без приставки от глагола несовершенного вида: жареная картошка, а также в слове кованый.",
+q:[["Прочита_ая книга лежала на столе.","нн","Приставка про- и глагол совершенного вида: прочитанная."],["Жаре_ая картошка остыла.","н","Нет приставки и зависимых слов, глагол несовершенного вида: жареная."],["Солдат, ране_ый в бою, вернулся домой.","нн","Есть зависимое слово «в бою»: раненный в бою."],["Кова_ый сундук стоял в углу.","н","Кованый — слово-исключение: одна Н."]]},
+{n:"Мост кратких форм",e:"🌉",rule:"В кратких причастиях пишется одна Н: задача решена, дом построен. Краткие прилагательные сохраняют НН полной формы (девушка образованна), но в мужском роде остаётся одна Н: он образован. В полных причастиях с приставкой, зависимым словом или от глагола совершенного вида — НН: сваренную, купленная.",
+q:[["Задача реше_а.","н","Краткое причастие: решена. Одна Н."],["Мальчик очень образова_.","н","Краткое прилагательное мужского рода: образован. Одна Н (но: она образованна)."],["Квартира, купле_ая родителями, была просторной.","нн","Полное причастие с зависимым словом: купленная."],["Мама подала на стол сваре_ую картошку.","нн","Приставка с- и совершенный вид: сваренную."]]},
+{n:"Остров наречий",e:"🏝️",rule:"В наречиях на -О и -Е пишется столько же Н, сколько в прилагательном, от которого они образованы: вдохновенный → вдохновенно, ветреный → ветрено.",
+q:[["Артист играл вдохнове_о.","нн","Вдохновенный → вдохновенно. Суффикс -ЕНН-."],["Сегодня на улице ветре_о.","н","Ветреный → ветрено. Одна Н, как в слове-исключении."],["Она вела себя естестве_о.","нн","Естественный → естественно. Две Н."],["Он держался непринуждё_о.","нн","Непринуждённый → непринуждённо. Две Н, как в прилагательном."]]}
+];
+var s,app=document.getElementById("app");
+function init(){s={lv:0,qi:0,sc:0,ok:0,st:0,best:0,lok:0,total:0};L.forEach(function(l){s.total+=l.q.length});start()}
+function hdr(){var d=s.lv*4+s.qi;return '<div class="top"><span class="chip">⭐ '+s.sc+'</span><span class="chip">'+(s.st>=2?'🔥 серия '+s.st:'Уровень '+(s.lv+1)+' из '+L.length)+'</span></div><div class="bar"><i style="width:'+Math.round(d/s.total*100)+'%"></i></div>'}
+function start(){app.innerHTML='<div class="card"><div class="big">📜🗝️</div><h1>Квест «Н и НН»</h1><p>Ты — хранитель Орфографического ключа. Пройди 5 локаций, выбирай верное написание в суффиксах прилагательных, причастий и наречий.</p><div class="rule">За верный ответ — 10 баллов. Три правильных ответа подряд дают +5 баллов за каждый следующий.</div><button class="btn" onclick="intro()">Начать квест</button></div>'}
+function map(){return '<div class="map">'+L.map(function(l,i){return '<span class="'+(i<s.lv?'done':i==s.lv?'cur':'')+'">'+(i<s.lv?'✅':l.e)+'</span>'}).join("")+'</div>'}
+function intro(){var l=L[s.lv];s.qi=0;s.lok=0;app.innerHTML=hdr()+'<div class="card">'+map()+'<h2>'+l.e+' '+l.n+'</h2><div class="rule"><b>Правило</b><br>'+l.rule+'</div><button class="btn" onclick="ask()">Вперёд!</button></div>'}
+function ask(){var l=L[s.lv],q=l.q[s.qi],t=q[0].replace("_",'<span class="gap" id="g">?</span>');
+app.innerHTML=hdr()+'<div class="card"><p>'+l.e+' '+l.n+' · вопрос '+(s.qi+1)+' из '+l.q.length+'</p><div class="word">'+t+'</div><p style="text-align:center;color:var(--mute)">Сколько букв Н нужно?</p><div class="row"><button class="ans" id="b1" onclick="pick(\'н\')">Н</button><button class="ans" id="b2" onclick="pick(\'нн\')">НН</button></div><div id="fb"></div></div>'}
+function pick(a){var q=L[s.lv].q[s.qi],r=a==q[1],g=document.getElementById("g");
+document.getElementById("b1").disabled=document.getElementById("b2").disabled=true;
+var pb=document.getElementById(a=="н"?"b1":"b2");pb.className="ans "+(r?"ok":"bad");
+if(!r)document.getElementById(q[1]=="н"?"b1":"b2").className="ans ok";
+g.textContent=q[1].toUpperCase();g.className="gap "+(r?"ok":"bad");
+var gain=0;if(r){s.st++;s.ok++;s.lok++;gain=10+(s.st>=3?5:0);s.sc+=gain;if(s.st>s.best)s.best=s.st}else s.st=0;
+var last=s.qi==L[s.lv].q.length-1;
+document.getElementById("fb").innerHTML='<div class="fb '+(r?"ok":"bad")+'"><b>'+(r?"Верно! +"+gain+" баллов":"Почти! Правильно — "+q[1].toUpperCase())+'</b>'+q[2]+'</div><button class="btn alt" onclick="next()">'+(last?"Завершить локацию":"Дальше")+'</button>'}
+function next(){s.qi++;if(s.qi<L[s.lv].q.length)ask();else done()}
+function stars(n,m){return '⭐'.repeat(n)+'☆'.repeat(m-n)}
+function done(){var l=L[s.lv],n=s.lok,m=l.q.length,msg=n==m?"Безупречно! Локация пройдена без ошибок.":n>=m-1?"Отлично! Одна ошибка не помешает пройти дальше.":n>=2?"Неплохо. Перечитай правило — оно поможет в следующих заданиях.":"Трудная локация. Повтори правило и попробуй пройти квест ещё раз.";
+var last=s.lv==L.length-1;
+app.innerHTML=hdr()+'<div class="card"><div class="big">'+(n>=3?"🎉":"💪")+'</div><h2 style="text-align:center">Локация пройдена: '+l.n+'</h2><div class="stars">'+stars(n,m)+'</div><p style="text-align:center">'+msg+'</p><button class="btn" onclick="'+(last?"fin()":"s.lv++;intro()")+'">'+(last?"Открыть сундук с ключом":"Следующая локация")+'</button></div>'}
+function fin(){var p=Math.round(s.ok/s.total*100),r=p==100?["🏆","Мастер орфографии"]:p>=85?["🥇","Хранитель ключа"]:p>=65?["🥈","Искатель приключений"]:p>=40?["🥉","Юный путешественник"]:["🌱","Начинающий ученик"];
+var adv=p>=85?"Ты отлично знаешь правила Н и НН. Можешь помогать одноклассникам!":p>=65?"Хороший результат! Повтори исключения: стеклянный, оловянный, деревянный, ветреный, кованый.":"Повтори правила и пройди квест снова: с каждой попыткой получится лучше.";
+app.innerHTML='<div class="top"><span class="chip">⭐ '+s.sc+'</span><span class="chip">Финал</span></div><div class="card"><div class="big">'+r[0]+'</div><h1 style="text-align:center">'+r[1]+'</h1><div class="stats"><div class="stat"><b>'+s.sc+'</b><span>баллов</span></div><div class="stat"><b>'+p+'%</b><span>верных ответов</span></div><div class="stat"><b>'+s.ok+' из '+s.total+'</b><span>правильно</span></div><div class="stat"><b>'+s.best+'</b><span>лучшая серия</span></div></div><div class="rule">'+adv+'</div><button class="btn" onclick="init()">Начать заново</button></div>'}
+init();
+</script>
+</body>
+</html>
